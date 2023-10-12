@@ -1,15 +1,17 @@
 import os,json
 import requests
 from flask import Flask, jsonify,request
-
+from dotenv import load_dotenv
 app = Flask(__name__)
 
+
+load_dotenv()
 # Replace these variables with your actual values
-client_id = '401c6eba-0003-4a56-a106-f31dcaeb0791'
-client_secret = 'Dd48Q~Ho9d6oR.0X.Rm1yFN8DI8OY5ww2wVabbDY'
-tenant_id = 'dc7ae3f9-f86b-45a7-91b2-248e3176c7e2'
-resource = 'https://graph.microsoft.com'
-site_id = "globtierin.sharepoint.com,9d47ebf2-c8e5-403a-b134-48f9c8ef0a69,7e973c9a-683c-4a1d-a63a-cc389b6d20ef"
+client_id = os.getenv('client_id')
+client_secret = os.getenv('client_secret')
+tenant_id = os.getenv('tenant_id')
+resource = os.getenv('resource')
+site_id = os.getenv('site_id')
 
 base_url = f'https://graph.microsoft.com/v1.0/sites/{site_id}/drive/items'
 
