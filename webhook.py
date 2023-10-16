@@ -1,10 +1,13 @@
 from flask import Flask, request,jsonify
 import json,os,requests
-from app import send_message_to_server,upload_pdfs_to_server
+from app import send_message_to_server,download_pdf_files,get_access_token,clean_local_directory
+
+
 
 app = Flask(__name__)
-# with app.app_context():
-#     upload_pdfs_to_server()
+
+
+
 
 @app.route("/ping", methods=['GET'])
 def ping():
@@ -13,6 +16,18 @@ def ping():
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
+    access_token = get_access_token()
+
+    if not access_token:
+        print("Failed to retrieve access token.")
+        exit()
+
+    folder_id = "root"
+    folder_name = ""
+
+    result, all_files = download_pdf_files(folder_id, folder_name, access_token)
+    clean_local_directory(all_files)
+    print(result)
     payload = request.form
     data = payload['intent']
     data1 = json.loads(data)
